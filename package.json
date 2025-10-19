@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "前端面试题文档",
   "type": "module",
+  "packageManager": "pnpm@8.15.0",
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
