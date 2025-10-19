@@ -1,5 +1,252 @@
 # ES6+ 特性
 
-## 待完善
+## 核心特性总览
 
-此页面内容待后续补充。
+ES6（ES2015）及后续版本引入了大量新特性，极大提升了 JavaScript 的开发体验。
+
+### 主要特性
+
+- `let` / `const`：块级作用域变量声明
+- 解构赋值
+- 模板字符串
+- 箭头函数
+- 默认参数
+- 展开/剩余运算符
+- `class` 类
+- 模块化（`import` / `export`）
+- `Promise`
+- `Map` / `Set`
+- `Symbol`
+- 迭代器/生成器
+- `Proxy` / `Reflect`
+
+## let / var / const
+
+### 对比表
+
+| 特性 | var | let | const |
+|------|-----|-----|-------|
+| **作用域** | 函数作用域 | 块级作用域 | 块级作用域 |
+| **变量提升** | 是 | 否（暂时性死区） | 否（暂时性死区） |
+| **重复声明** | 允许 | 不允许 | 不允许 |
+| **重新赋值** | 允许 | 允许 | 不允许 |
+| **初始化** | 可选 | 可选 | 必须 |
+
+### 示例
+
+```javascript
+// var - 函数作用域
+function test() {
+  var a = 1
+  if (true) {
+    var a = 2 // 同一个变量
+  }
+  console.log(a) // 2
+}
+
+// let - 块级作用域
+function test() {
+  let a = 1
+  if (true) {
+    let a = 2 // 不同变量
+  }
+  console.log(a) // 1
+}
+
+// const - 不可重新赋值
+const obj = { name: 'foo' }
+obj.name = 'bar'  // ✅ 可以修改属性
+obj = {}          // ❌ 不能重新赋值
+```
+
+## 箭头函数 vs 普通函数
+
+### 区别
+
+| 特性 | 普通函数 | 箭头函数 |
+|------|---------|---------|
+| **this** | 动态绑定 | 词法绑定（继承外层） |
+| **arguments** | 有 | 无 |
+| **prototype** | 有 | 无 |
+| **构造函数** | 可以 | 不可以 |
+| **语法** | 较繁琐 | 简洁 |
+
+### 示例
+
+```javascript
+// 普通函数
+function foo() {
+  console.log(this)      // 取决于调用方式
+  console.log(arguments) // 参数对象
+}
+
+// 箭头函数
+const bar = () => {
+  console.log(this)      // 词法作用域的 this
+  // console.log(arguments) // ❌ 报错
+}
+
+// 不能用作构造函数
+new foo()  // ✅ 正常
+new bar()  // ❌ 报错
+```
+
+### 使用场景
+
+**适合箭头函数**
+- 回调函数
+- 简短的函数表达式
+- 不需要动态 this 的场景
+
+**不适合箭头函数**
+- 对象方法（需要动态 this）
+- 事件处理器（某些情况）
+- 需要使用 arguments
+
+## 数组去重
+
+### 方法 1：Set（最简洁）
+
+```javascript
+const arr = [1, 2, 2, 3, 3, 4]
+const unique = [...new Set(arr)]
+// 或
+const unique = Array.from(new Set(arr))
+```
+
+### 方法 2：filter + indexOf
+
+```javascript
+const unique = arr.filter((item, index) => {
+  return arr.indexOf(item) === index
+})
+```
+
+### 方法 3：reduce + includes
+
+```javascript
+const unique = arr.reduce((acc, cur) => {
+  return acc.includes(cur) ? acc : [...acc, cur]
+}, [])
+```
+
+### 方法 4：Map
+
+```javascript
+const map = new Map()
+const unique = arr.filter(item => {
+  return !map.has(item) && map.set(item, true)
+})
+```
+
+## 深浅拷贝
+
+### 浅拷贝
+
+只复制第一层，深层的对象仍然是引用。
+
+```javascript
+// 方法 1：展开运算符
+const obj2 = { ...obj1 }
+
+// 方法 2：Object.assign
+const obj2 = Object.assign({}, obj1)
+
+// 方法 3：数组的 slice/concat
+const arr2 = arr1.slice()
+const arr2 = arr1.concat()
+```
+
+### 深拷贝
+
+完全复制，包括所有嵌套对象。
+
+```javascript
+// 方法 1：JSON（简单但有限制）
+const obj2 = JSON.parse(JSON.stringify(obj1))
+// ❌ 丢失：函数、undefined、Symbol、循环引用
+
+// 方法 2：structuredClone（现代浏览器）
+const obj2 = structuredClone(obj1)
+
+// 方法 3：lodash
+import { cloneDeep } from 'lodash'
+const obj2 = cloneDeep(obj1)
+
+// 方法 4：手写递归
+function deepClone(obj) {
+  if (obj === null || typeof obj !== 'object') return obj
+  const clone = Array.isArray(obj) ? [] : {}
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      clone[key] = deepClone(obj[key])
+    }
+  }
+  return clone
+}
+```
+
+## bind / call / apply
+
+### 作用
+
+三者都用于改变函数的 `this` 指向。
+
+### 区别
+
+| 方法 | 参数形式 | 执行时机 |
+|------|---------|---------|
+| `call` | `fn.call(obj, a, b, c)` | 立即执行 |
+| `apply` | `fn.apply(obj, [a, b, c])` | 立即执行 |
+| `bind` | `fn.bind(obj, a, b)` | 返回新函数 |
+
+### 示例
+
+```javascript
+function greet(greeting, punctuation) {
+  console.log(`${greeting}, ${this.name}${punctuation}`)
+}
+
+const user = { name: 'Alice' }
+
+// call - 离散参数，立即执行
+greet.call(user, 'Hello', '!')  // "Hello, Alice!"
+
+// apply - 数组参数，立即执行
+greet.apply(user, ['Hi', '.'])  // "Hi, Alice."
+
+// bind - 返回新函数
+const boundGreet = greet.bind(user, 'Hey')
+boundGreet('?')  // "Hey, Alice?"
+```
+
+### 优先级
+
+```javascript
+new 绑定 > 显式绑定(call/apply/bind) > 隐式绑定 > 默认绑定
+```
+
+## 模块化
+
+### AMD / CMD / CommonJS / ES6 Module
+
+| 规范 | 加载方式 | 使用场景 | 代表 |
+|------|---------|---------|------|
+| **AMD** | 异步加载，依赖前置 | 浏览器 | RequireJS |
+| **CMD** | 异步加载，依赖就近 | 浏览器 | SeaJS |
+| **CommonJS** | 同步加载 | Node.js | Node.js |
+| **ES6 Module** | 静态加载 | 浏览器/Node.js | 现代标准 |
+
+### ES6 Module 示例
+
+```javascript
+// 导出
+export const name = 'foo'
+export function fn() {}
+export default class {}
+
+// 导入
+import { name, fn } from './module'
+import MyClass from './module'
+import * as all from './module'
+```
