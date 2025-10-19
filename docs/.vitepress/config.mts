@@ -3,7 +3,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "前端面试题",
   description: "全面的前端面试知识库",
-  base: "/interview-docs/",
+  base: "/cgInterviewQuestion/",
   lang: "zh-CN",
 
   themeConfig: {
@@ -71,7 +71,7 @@ export default defineConfig({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/yourusername/interview-docs",
+        link: "https://github.com/chungang1997/cgInterviewQuestion",
       },
     ],
 
