@@ -1,0 +1,16 @@
+{
+  "name": "interview-docs",
+  "version": "1.0.0",
+  "description": "前端面试题文档",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.0.0",
+    "vue": "^3.3.4"
+  }
+}
+
