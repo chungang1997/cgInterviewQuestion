@@ -15,13 +15,13 @@
 <!-- 子组件 -->
 <script>
 export default {
-  props: ['message'],
+  props: ["message"],
   methods: {
     handleClick() {
-      this.$emit('update', 'new value')
-    }
-  }
-}
+      this.$emit("update", "new value");
+    },
+  },
+};
 </script>
 ```
 
@@ -55,22 +55,22 @@ export default {
 
 ```javascript
 // Pinia Store
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore("user", {
   state: () => ({
-    name: 'Alice'
+    name: "Alice",
   }),
   actions: {
     updateName(name) {
-      this.name = name
-    }
-  }
-})
+      this.name = name;
+    },
+  },
+});
 
 // 组件中使用
-const userStore = useUserStore()
-console.log(userStore.name)
+const userStore = useUserStore();
+console.log(userStore.name);
 ```
 
 **适用场景：** 全局共享状态
@@ -103,16 +103,16 @@ console.log(userStore.name)
 
 ```javascript
 // Vue3 使用 mitt
-import mitt from 'mitt'
-const emitter = mitt()
+import mitt from "mitt";
+const emitter = mitt();
 
 // 组件 A
-emitter.emit('custom-event', data)
+emitter.emit("custom-event", data);
 
 // 组件 B
-emitter.on('custom-event', (data) => {
-  console.log(data)
-})
+emitter.on("custom-event", (data) => {
+  console.log(data);
+});
 ```
 
 **适用场景：** 兄弟组件、无直接关系的组件
@@ -132,21 +132,21 @@ emitter.on('custom-event', (data) => {
 export default {
   methods: {
     callChildMethod() {
-      this.$refs.childRef.someMethod()
-    }
-  }
-}
+      this.$refs.childRef.someMethod();
+    },
+  },
+};
 </script>
 
 <!-- 子组件 Vue3 需要 defineExpose -->
 <script setup>
-import { defineExpose } from 'vue'
+import { defineExpose } from "vue";
 
 const someMethod = () => {
-  console.log('子组件方法被调用')
-}
+  console.log("子组件方法被调用");
+};
 
-defineExpose({ someMethod })
+defineExpose({ someMethod });
 </script>
 ```
 
@@ -181,12 +181,12 @@ defineExpose({ someMethod })
 ```javascript
 // 传参
 this.$router.push({
-  path: '/user',
-  query: { id: 1 }
-})
+  path: "/user",
+  query: { id: 1 },
+});
 
 // 接收
-this.$route.query.id
+this.$route.query.id;
 ```
 
 **适用场景：** 跨页面通信
@@ -197,10 +197,10 @@ this.$route.query.id
 
 ```javascript
 // 存储
-localStorage.setItem('token', 'xxx')
+localStorage.setItem("token", "xxx");
 
 // 读取
-const token = localStorage.getItem('token')
+const token = localStorage.getItem("token");
 ```
 
 **适用场景：** 跨页面、持久化数据
@@ -211,36 +211,37 @@ const token = localStorage.getItem('token')
 
 ```javascript
 // 页面 A
-const channel = new BroadcastChannel('my-channel')
-channel.postMessage('Hello')
+const channel = new BroadcastChannel("my-channel");
+channel.postMessage("Hello");
 
 // 页面 B
-const channel = new BroadcastChannel('my-channel')
+const channel = new BroadcastChannel("my-channel");
 channel.onmessage = (event) => {
-  console.log(event.data) // 'Hello'
-}
+  console.log(event.data); // 'Hello'
+};
 ```
 
 **适用场景：** 多标签页同步
 
 ## 场景选择指南
 
-| 场景 | 推荐方式 |
-|------|---------|
-| **父子通信** | props + emit |
-| **跨多层** | provide/inject |
-| **全局共享** | Pinia/Vuex |
-| **父调子方法** | $refs + defineExpose |
-| **兄弟组件** | mitt 或 Pinia |
-| **跨页面** | 路由参数或 localStorage |
-| **内容分发** | 插槽 |
-| **属性透传** | $attrs |
+| 场景           | 推荐方式                |
+| -------------- | ----------------------- |
+| **父子通信**   | props + emit            |
+| **跨多层**     | provide/inject          |
+| **全局共享**   | Pinia/Vuex              |
+| **父调子方法** | $refs + defineExpose    |
+| **兄弟组件**   | mitt 或 Pinia           |
+| **跨页面**     | 路由参数或 localStorage |
+| **内容分发**   | 插槽                    |
+| **属性透传**   | $attrs                  |
 
 ## 面试高频问答
 
 ### Q: Vue 组件通信有哪些方式？
 
 最常用的有：
+
 1. props / emit（父子）
 2. provide / inject（跨层级）
 3. Vuex / Pinia（全局）

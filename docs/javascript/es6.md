@@ -318,3 +318,88 @@ import { name, fn } from "./module";
 import MyClass from "./module";
 import * as all from "./module";
 ```
+
+### 导出方式总结
+
+#### 1）命名导出（声明时导出）
+
+```javascript
+export const PI = 3.14159;
+export function add(a, b) {
+  return a + b;
+}
+export class Person {}
+```
+
+#### 2）命名导出（声明后统一导出）
+
+```javascript
+const PI = 3.14159;
+function add(a, b) {
+  return a + b;
+}
+class Person {}
+
+export { PI, add, Person };
+```
+
+#### 3）命名导出重命名（as）
+
+```javascript
+const PI = 3.14159;
+function add(a, b) {
+  return a + b;
+}
+
+export { PI as CONST_PI, add as sum };
+```
+
+#### 4）默认导出（default）
+
+```javascript
+// 表达式/值
+export default 42;
+
+// 函数/类（可匿名）
+export default function () {}
+export default class {}
+
+// 也可以先声明再默认导出
+function main() {}
+export default main;
+```
+
+#### 5）默认导出与命名导出并存
+
+```javascript
+export const VERSION = "1.0.0";
+export function utils() {}
+
+const App = {};
+export default App;
+```
+
+对应导入：
+
+```javascript
+import App, { VERSION, utils } from "./module";
+```
+
+#### 6）再导出 / 聚合导出（re-export）
+
+```javascript
+// 直接从其他模块导出指定成员（可重命名）
+export { foo, bar as baz } from "./other";
+
+// 导出默认导出并改名
+export { default as Other } from "./other";
+
+// 导出对方的所有命名导出（不包含默认导出）
+export * from "./other";
+```
+
+#### 7）注意事项
+
+- 一个模块只有一个 `default` 导出，但可以有多个命名导出。
+- 导入命名导出时名称需对齐（或用 `as` 重命名）；默认导出导入名可自定。
+- `export * from` 不会带出默认导出，如需同时带出可搭配 `export { default as X } from '...'`。

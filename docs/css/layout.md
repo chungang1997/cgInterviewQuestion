@@ -53,12 +53,12 @@ BFC (Block Formatting Context) 是块级格式化上下文，是一个独立的�
 
 ### 实际应用
 
-| 场景 | 解决方案 |
-|------|---------|
-| 清除浮动 | 父元素 `overflow: hidden` |
-| 防止外边距合并 | 触发 BFC |
-| 自适应两栏布局 | 右侧触发 BFC |
-| 阻止元素被浮动元素覆盖 | 触发 BFC |
+| 场景                   | 解决方案                  |
+| ---------------------- | ------------------------- |
+| 清除浮动               | 父元素 `overflow: hidden` |
+| 防止外边距合并         | 触发 BFC                  |
+| 自适应两栏布局         | 右侧触发 BFC              |
+| 阻止元素被浮动元素覆盖 | 触发 BFC                  |
 
 ## 常见布局方案
 
@@ -70,8 +70,8 @@ BFC (Block Formatting Context) 是块级格式化上下文，是一个独立的�
 .container {
   display: flex;
   justify-content: center; /* 主轴对齐 */
-  align-items: center;     /* 交叉轴对齐 */
-  flex-wrap: wrap;         /* 换行 */
+  align-items: center; /* 交叉轴对齐 */
+  flex-wrap: wrap; /* 换行 */
 }
 
 .item {
@@ -152,6 +152,7 @@ CSS → CSSOM树
 **定义：** 元素样式改变但不影响布局
 
 **触发条件：**
+
 - 颜色改变
 - 背景色改变
 - 阴影改变
@@ -164,6 +165,7 @@ CSS → CSSOM树
 **定义：** 元素几何属性改变，需要重新计算布局
 
 **触发条件：**
+
 - 尺寸改变（width、height、padding、margin）
 - 位置改变（top、left）
 - 添加/删除元素
@@ -179,15 +181,15 @@ CSS → CSSOM树
 
 ```javascript
 // ❌ 糟糕 - 多次回流
-el.style.width = '100px'
-el.style.height = '200px'
-el.style.margin = '10px'
+el.style.width = "100px";
+el.style.height = "200px";
+el.style.margin = "10px";
 
 // ✅ 好 - 一次回流
-el.style.cssText = 'width: 100px; height: 200px; margin: 10px;'
+el.style.cssText = "width: 100px; height: 200px; margin: 10px;";
 
 // 或使用 class
-el.className = 'new-style'
+el.className = "new-style";
 ```
 
 #### 2. 批量修改 DOM
@@ -195,17 +197,17 @@ el.className = 'new-style'
 ```javascript
 // ❌ 糟糕
 for (let i = 0; i < 1000; i++) {
-  container.innerHTML += '<div>item</div>'
+  container.innerHTML += "<div>item</div>";
 }
 
 // ✅ 好
-const fragment = document.createDocumentFragment()
+const fragment = document.createDocumentFragment();
 for (let i = 0; i < 1000; i++) {
-  const div = document.createElement('div')
-  div.textContent = 'item'
-  fragment.appendChild(div)
+  const div = document.createElement("div");
+  div.textContent = "item";
+  fragment.appendChild(div);
 }
-container.appendChild(fragment)
+container.appendChild(fragment);
 ```
 
 #### 3. 使用 transform 代替 top/left
@@ -228,13 +230,13 @@ container.appendChild(fragment)
 ```javascript
 // ❌ 糟糕 - 每次读取都触发回流
 for (let i = 0; i < elements.length; i++) {
-  elements[i].style.width = box.offsetWidth + 'px'
+  elements[i].style.width = box.offsetWidth + "px";
 }
 
 // ✅ 好 - 缓存布局信息
-const width = box.offsetWidth
+const width = box.offsetWidth;
 for (let i = 0; i < elements.length; i++) {
-  elements[i].style.width = width + 'px'
+  elements[i].style.width = width + "px";
 }
 ```
 
@@ -249,12 +251,12 @@ for (let i = 0; i < elements.length; i++) {
 
 ### 性能对比
 
-| 操作 | 回流 | 重绘 | 合成 |
-|------|-----|-----|-----|
-| 改变颜色 | ❌ | ✅ | ✅ |
-| 改变位置（transform） | ❌ | ❌ | ✅ |
-| 改变位置（top/left） | ✅ | ✅ | ✅ |
-| 改变尺寸 | ✅ | ✅ | ✅ |
-| 添加元素 | ✅ | ✅ | ✅ |
+| 操作                  | 回流 | 重绘 | 合成 |
+| --------------------- | ---- | ---- | ---- |
+| 改变颜色              | ❌   | ✅   | ✅   |
+| 改变位置（transform） | ❌   | ❌   | ✅   |
+| 改变位置（top/left）  | ✅   | ✅   | ✅   |
+| 改变尺寸              | ✅   | ✅   | ✅   |
+| 添加元素              | ✅   | ✅   | ✅   |
 
 **性能：** 合成 > 重绘 > 回流

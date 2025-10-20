@@ -8,11 +8,11 @@
 
 ### Vue2 vs Vue3 对比
 
-| 维度 | Vue2 | Vue3 |
-|------|------|------|
-| **绑定的 prop** | `value` | `modelValue` |
-| **回传的事件** | `input` | `update:modelValue` |
-| **多个 v-model** | 不支持 | 支持（`v-model:title`） |
+| 维度             | Vue2    | Vue3                    |
+| ---------------- | ------- | ----------------------- |
+| **绑定的 prop**  | `value` | `modelValue`            |
+| **回传的事件**   | `input` | `update:modelValue`     |
+| **多个 v-model** | 不支持  | 支持（`v-model:title`） |
 
 ### 实现原理
 
@@ -21,6 +21,7 @@
 使用 `Object.defineProperty` 劫持数据 + 依赖收集
 
 **特点：**
+
 - 需要递归遍历所有属性
 - 无法监听新增/删除属性
 - 数组需要重写方法
@@ -29,17 +30,17 @@
 **示例：**
 
 ```javascript
-Object.defineProperty(obj, 'key', {
+Object.defineProperty(obj, "key", {
   get() {
     // 依赖收集
-    return value
+    return value;
   },
   set(newVal) {
     // 触发更新
-    value = newVal
-    notify()
-  }
-})
+    value = newVal;
+    notify();
+  },
+});
 ```
 
 #### Vue3 响应式
@@ -47,6 +48,7 @@ Object.defineProperty(obj, 'key', {
 使用 `Proxy` 代理 + 响应式跟踪
 
 **特点：**
+
 - 代理整个对象
 - 支持动态添加/删除属性
 - 直接监听数组操作
@@ -57,15 +59,15 @@ Object.defineProperty(obj, 'key', {
 ```javascript
 const proxy = new Proxy(obj, {
   get(target, key) {
-    track(target, key) // 依赖收集
-    return target[key]
+    track(target, key); // 依赖收集
+    return target[key];
   },
   set(target, key, value) {
-    target[key] = value
-    trigger(target, key) // 触发更新
-    return true
-  }
-})
+    target[key] = value;
+    trigger(target, key); // 触发更新
+    return true;
+  },
+});
 ```
 
 ## Vue2 动态添加属性问题
@@ -82,19 +84,19 @@ const proxy = new Proxy(obj, {
 #### 方法 1：Vue.set / $set（推荐）
 
 ```javascript
-this.$set(this.obj, 'newProp', 'value')
+this.$set(this.obj, "newProp", "value");
 ```
 
 #### 方法 2：Object.assign 创建新对象
 
 ```javascript
-this.obj = Object.assign({}, this.obj, { newProp: 'value' })
+this.obj = Object.assign({}, this.obj, { newProp: "value" });
 ```
 
 #### 方法 3：扩展运算符
 
 ```javascript
-this.obj = { ...this.obj, newProp: 'value' }
+this.obj = { ...this.obj, newProp: "value" };
 ```
 
 #### 方法 4：预先定义（最佳）
@@ -112,6 +114,7 @@ data() {
 ### Vue3 改进
 
 使用 `Proxy` 代理整个对象：
+
 - ✅ 支持动态添加/删除属性
 - ✅ 无需特殊处理
 - ✅ 性能更好
@@ -133,9 +136,9 @@ data() {
 
 ### 使用方式
 
-| Vue 版本 | 用法 |
-|---------|------|
-| **Vue2** | `this.$nextTick(callback)` 或 `Vue.nextTick(callback)` |
+| Vue 版本 | 用法                                                       |
+| -------- | ---------------------------------------------------------- |
+| **Vue2** | `this.$nextTick(callback)` 或 `Vue.nextTick(callback)`     |
 | **Vue3** | `import { nextTick } from 'vue'` 然后 `nextTick(callback)` |
 
 ### 实现原理
@@ -151,28 +154,28 @@ data() {
 
 ### 应用场景
 
-| 场景 | 说明 |
-|------|------|
-| **获取更新后的 DOM** | 数据改变后立即获取 DOM |
-| **DOM 操作** | 依赖更新后的 DOM 尺寸/位置 |
-| **第三方插件初始化** | 需要 DOM 完全渲染后初始化 |
-| **滚动到底部** | 列表数据更新后滚动 |
+| 场景                 | 说明                       |
+| -------------------- | -------------------------- |
+| **获取更新后的 DOM** | 数据改变后立即获取 DOM     |
+| **DOM 操作**         | 依赖更新后的 DOM 尺寸/位置 |
+| **第三方插件初始化** | 需要 DOM 完全渲染后初始化  |
+| **滚动到底部**       | 列表数据更新后滚动         |
 
 ### 示例
 
 ```javascript
 // Vue2
-this.message = '更新后的内容'
+this.message = "更新后的内容";
 this.$nextTick(() => {
-  console.log(this.$refs.msg.innerText) // '更新后的内容'
-})
+  console.log(this.$refs.msg.innerText); // '更新后的内容'
+});
 
 // Vue3
-import { nextTick } from 'vue'
+import { nextTick } from "vue";
 
-data.value = '新数据'
-await nextTick() // 支持 Promise
-console.log(document.querySelector('.msg').innerText)
+data.value = "新数据";
+await nextTick(); // 支持 Promise
+console.log(document.querySelector(".msg").innerText);
 ```
 
 ## Diff 算法
@@ -183,30 +186,30 @@ console.log(document.querySelector('.msg').innerText)
 
 ### 核心策略
 
-| 策略 | 说明 |
-|------|------|
-| **同层比较** | 只比较同一层级，不跨层级 |
-| **类型判断** | 标签/组件类型不同直接替换 |
-| **key 标识** | 用 key 判断节点是否可复用 |
+| 策略         | 说明                           |
+| ------------ | ------------------------------ |
+| **同层比较** | 只比较同一层级，不跨层级       |
+| **类型判断** | 标签/组件类型不同直接替换      |
+| **key 标识** | 用 key 判断节点是否可复用      |
 | **双端比较** | 头头、尾尾、头尾、尾头四种对比 |
 
 ### Vue2 vs Vue3 Diff 对比
 
-| 维度 | Vue2 | Vue3 |
-|------|------|------|
-| **算法** | 双端比较 | 最长递增子序列 |
-| **静态标记** | 无 | 有（PatchFlag） |
-| **静态提升** | 无 | 有（hoistStatic） |
-| **性能** | 较好 | 更优 |
+| 维度         | Vue2     | Vue3              |
+| ------------ | -------- | ----------------- |
+| **算法**     | 双端比较 | 最长递增子序列    |
+| **静态标记** | 无       | 有（PatchFlag）   |
+| **静态提升** | 无       | 有（hoistStatic） |
+| **性能**     | 较好     | 更优              |
 
 ### 为什么需要 key
 
-| 有 key | 无 key |
-|--------|--------|
-| ✅ 精确复用节点 | ❌ 就地复用（可能错误） |
-| ✅ 减少 DOM 操作 | ❌ 更多 DOM 操作 |
-| ✅ 维护组件状态 | ❌ 状态可能混乱 |
-| ✅ 触发过渡动画 | ❌ 动画可能失效 |
+| 有 key           | 无 key                  |
+| ---------------- | ----------------------- |
+| ✅ 精确复用节点  | ❌ 就地复用（可能错误） |
+| ✅ 减少 DOM 操作 | ❌ 更多 DOM 操作        |
+| ✅ 维护组件状态  | ❌ 状态可能混乱         |
+| ✅ 触发过渡动画  | ❌ 动画可能失效         |
 
 ### key 的使用原则
 

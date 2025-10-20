@@ -6,44 +6,44 @@
 
 ## 重大变化对比
 
-| 维度 | Vue2 | Vue3 |
-|------|------|------|
-| **响应式原理** | Object.defineProperty | Proxy |
-| **API 风格** | Options API | Composition API（可选 Options） |
-| **生命周期** | beforeDestroy/destroyed | onBeforeUnmount/onUnmounted |
-| **根元素** | 必须单根节点 | 支持多根节点（Fragment） |
-| **TypeScript** | 支持较弱 | 完全支持 |
-| **性能** | 较好 | 更优（编译优化） |
-| **体积** | ~32KB | ~13KB（Tree-shaking） |
-| **创建应用** | `new Vue()` | `createApp()` |
+| 维度           | Vue2                    | Vue3                            |
+| -------------- | ----------------------- | ------------------------------- |
+| **响应式原理** | Object.defineProperty   | Proxy                           |
+| **API 风格**   | Options API             | Composition API（可选 Options） |
+| **生命周期**   | beforeDestroy/destroyed | onBeforeUnmount/onUnmounted     |
+| **根元素**     | 必须单根节点            | 支持多根节点（Fragment）        |
+| **TypeScript** | 支持较弱                | 完全支持                        |
+| **性能**       | 较好                    | 更优（编译优化）                |
+| **体积**       | ~32KB                   | ~13KB（Tree-shaking）           |
+| **创建应用**   | `new Vue()`             | `createApp()`                   |
 
 ## 一、响应式系统
 
 ### 实现原理对比
 
-| 对比项 | Vue2 | Vue3 |
-|--------|------|------|
-| **实现原理** | Object.defineProperty | Proxy |
-| **监听数组** | 重写数组方法 | 直接监听 |
-| **动态属性** | 需要 $set | 直接添加 |
-| **性能** | 初始化慢（递归遍历） | 初始化快 |
-| **深度监听** | 递归遍历所有属性 | 懒代理（按需） |
+| 对比项       | Vue2                  | Vue3           |
+| ------------ | --------------------- | -------------- |
+| **实现原理** | Object.defineProperty | Proxy          |
+| **监听数组** | 重写数组方法          | 直接监听       |
+| **动态属性** | 需要 $set             | 直接添加       |
+| **性能**     | 初始化慢（递归遍历）  | 初始化快       |
+| **深度监听** | 递归遍历所有属性      | 懒代理（按需） |
 
 ### 示例对比
 
 ```javascript
 // Vue2 - 无法监听的情况
-obj.newProp = 'value'  // ❌ 不会触发更新
-delete obj.prop        // ❌ 不会触发更新
-arr[0] = 'new'         // ❌ 不会触发更新
+obj.newProp = "value"; // ❌ 不会触发更新
+delete obj.prop; // ❌ 不会触发更新
+arr[0] = "new"; // ❌ 不会触发更新
 
 // 需要使用 $set
-this.$set(obj, 'newProp', 'value')  // ✅ 触发更新
+this.$set(obj, "newProp", "value"); // ✅ 触发更新
 
 // Vue3 - 可以直接监听
-obj.newProp = 'value'  // ✅ 触发更新
-delete obj.prop        // ✅ 触发更新
-arr[0] = 'new'         // ✅ 触发更新
+obj.newProp = "value"; // ✅ 触发更新
+delete obj.prop; // ✅ 触发更新
+arr[0] = "new"; // ✅ 触发更新
 ```
 
 ## 二、组合式 API vs 选项式 API
@@ -53,62 +53,62 @@ arr[0] = 'new'         // ✅ 触发更新
 ```javascript
 export default {
   data() {
-    return { count: 0 }
+    return { count: 0 };
   },
   methods: {
     increment() {
-      this.count++
-    }
+      this.count++;
+    },
   },
   mounted() {
-    console.log('mounted')
-  }
-}
+    console.log("mounted");
+  },
+};
 ```
 
 ### Vue3 - Composition API
 
 ```javascript
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
 export default {
   setup() {
-    const count = ref(0)
-    const increment = () => count.value++
+    const count = ref(0);
+    const increment = () => count.value++;
 
     onMounted(() => {
-      console.log('mounted')
-    })
+      console.log("mounted");
+    });
 
-    return { count, increment }
-  }
-}
+    return { count, increment };
+  },
+};
 ```
 
 ### 对比
 
-| 维度 | Options API | Composition API |
-|------|-------------|-----------------|
-| **代码组织** | 按选项类型分散 | 按功能逻辑聚合 |
+| 维度         | Options API     | Composition API     |
+| ------------ | --------------- | ------------------- |
+| **代码组织** | 按选项类型分散  | 按功能逻辑聚合      |
 | **逻辑复用** | Mixin（易冲突） | Composables（清晰） |
-| **类型推导** | 弱 | 强（TS 友好） |
-| **代码量** | 较多 | 较少 |
-| **学习曲线** | 平缓 | 较陡 |
+| **类型推导** | 弱              | 强（TS 友好）       |
+| **代码量**   | 较多            | 较少                |
+| **学习曲线** | 平缓            | 较陡                |
 
 ## 三、生命周期变化
 
-| Vue2 | Vue3 Composition API |
-|------|---------------------|
-| beforeCreate | setup() |
-| created | setup() |
-| beforeMount | onBeforeMount |
-| mounted | onMounted |
-| beforeUpdate | onBeforeUpdate |
-| updated | onUpdated |
-| **beforeDestroy** | **onBeforeUnmount** |
-| **destroyed** | **onUnmounted** |
-| activated | onActivated |
-| deactivated | onDeactivated |
+| Vue2              | Vue3 Composition API |
+| ----------------- | -------------------- |
+| beforeCreate      | setup()              |
+| created           | setup()              |
+| beforeMount       | onBeforeMount        |
+| mounted           | onMounted            |
+| beforeUpdate      | onBeforeUpdate       |
+| updated           | onUpdated            |
+| **beforeDestroy** | **onBeforeUnmount**  |
+| **destroyed**     | **onUnmounted**      |
+| activated         | onActivated          |
+| deactivated       | onDeactivated        |
 
 ## 四、新特性
 
@@ -155,14 +155,14 @@ export default {
 
 ## 五、性能优化
 
-| 优化项 | Vue2 | Vue3 |
-|--------|------|------|
-| **编译优化** | 无 | PatchFlag（静态标记） |
-| **静态提升** | 无 | hoistStatic |
-| **事件缓存** | 无 | cacheHandlers |
-| **Diff 算法** | 双端比较 | 最长递增子序列 |
-| **Tree-shaking** | 不支持 | 完全支持 |
-| **打包体积** | ~32KB | ~13KB |
+| 优化项           | Vue2     | Vue3                  |
+| ---------------- | -------- | --------------------- |
+| **编译优化**     | 无       | PatchFlag（静态标记） |
+| **静态提升**     | 无       | hoistStatic           |
+| **事件缓存**     | 无       | cacheHandlers         |
+| **Diff 算法**    | 双端比较 | 最长递增子序列        |
+| **Tree-shaking** | 不支持   | 完全支持              |
+| **打包体积**     | ~32KB    | ~13KB                 |
 
 ### PatchFlag 示例
 
@@ -170,9 +170,7 @@ Vue3 在编译时会标记动态内容：
 
 ```javascript
 // 编译后
-createVNode("div", null, [
-  createVNode("p", null, _ctx.message, 1 /* TEXT */)
-])
+createVNode("div", null, [createVNode("p", null, _ctx.message, 1 /* TEXT */)]);
 // 1 表示只有文本是动态的，其他都是静态的
 ```
 
@@ -182,29 +180,29 @@ createVNode("div", null, [
 
 ```javascript
 // Vue2
-import Vue from 'vue'
+import Vue from "vue";
 new Vue({
-  render: h => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
 
 // Vue3
-import { createApp } from 'vue'
-createApp(App).mount('#app')
+import { createApp } from "vue";
+createApp(App).mount("#app");
 ```
 
 ### 2. 全局 API
 
 ```javascript
 // Vue2
-Vue.component('MyComponent', {})
-Vue.directive('focus', {})
-Vue.mixin({})
+Vue.component("MyComponent", {});
+Vue.directive("focus", {});
+Vue.mixin({});
 
 // Vue3
-const app = createApp(App)
-app.component('MyComponent', {})
-app.directive('focus', {})
-app.mixin({})
+const app = createApp(App);
+app.component("MyComponent", {});
+app.directive("focus", {});
+app.mixin({});
 ```
 
 ### 3. v-model
@@ -228,36 +226,44 @@ app.mixin({})
 
 ```javascript
 // Vue2 - 有 filters
-{{ message | capitalize }}
+{
+  {
+    message | capitalize;
+  }
+}
 
 // Vue3 - 移除 filters，用方法或计算属性
-{{ capitalize(message) }}
+{
+  {
+    capitalize(message);
+  }
+}
 ```
 
 ## 七、组件通信差异
 
-| 方式 | Vue2 | Vue3 |
-|------|------|------|
-| **$children** | 支持 | 移除 |
-| **$listeners** | 支持 | 移除（合并到 $attrs） |
-| **$attrs** | 不含 class/style | 含 class/style |
-| **emits 选项** | 可选 | 推荐显式声明 |
+| 方式           | Vue2             | Vue3                  |
+| -------------- | ---------------- | --------------------- |
+| **$children**  | 支持             | 移除                  |
+| **$listeners** | 支持             | 移除（合并到 $attrs） |
+| **$attrs**     | 不含 class/style | 含 class/style        |
+| **emits 选项** | 可选             | 推荐显式声明          |
 
 ## 八、TypeScript 支持
 
 ```typescript
 // Vue3 - 原生 TS 支持
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   setup() {
-    const count = ref<number>(0)  // 类型推导
+    const count = ref<number>(0); // 类型推导
     const increment = (): void => {
-      count.value++
-    }
-    return { count, increment }
-  }
-})
+      count.value++;
+    };
+    return { count, increment };
+  },
+});
 ```
 
 ## 九、迁移要点

@@ -66,6 +66,16 @@ Promise 是异步状态容器：
 - `catch`：处理失败
 - `finally`：无论成功失败都执行
 
+### 静态方法
+
+- `Promise.resolve(value)`：返回一个已成功的 Promise
+- `Promise.reject(reason)`：返回一个已失败的 Promise
+- `Promise.all(iterable)`：全部成功才成功；任一失败则整体失败；结果顺序与输入一致
+- `Promise.race(iterable)`：谁先 settle 就采用谁的结果（成功或失败）
+- `Promise.allSettled(iterable)`：等待全部 settle，返回每项的状态与值/原因
+- `Promise.any(iterable)`：任一成功就成功；全部失败抛出 `AggregateError`
+- `Promise.withResolvers()`：返回 `{ promise, resolve, reject }`（较新，需运行环境支持）
+
 ### 特点
 
 - 链式调用

@@ -38,8 +38,8 @@
 ### 比较
 
 ```javascript
-null == undefined  // true（相等运算符）
-null === undefined // false（严格相等）
+null == undefined; // true（相等运算符）
+null === undefined; // false（严格相等）
 ```
 
 ## 闭包（Closure）
@@ -75,9 +75,9 @@ this 的值取决于函数的**调用方式**：
 
 ```javascript
 function foo() {
-  console.log(this) // 非严格: window, 严格: undefined
+  console.log(this); // 非严格: window, 严格: undefined
 }
-foo()
+foo();
 ```
 
 #### 2. 隐式绑定
@@ -85,27 +85,27 @@ foo()
 ```javascript
 const obj = {
   foo() {
-    console.log(this) // obj
-  }
-}
-obj.foo()
+    console.log(this); // obj
+  },
+};
+obj.foo();
 ```
 
 #### 3. 显式绑定
 
 ```javascript
-foo.call(obj)   // this 指向 obj
-foo.apply(obj)  // this 指向 obj
-foo.bind(obj)() // this 指向 obj
+foo.call(obj); // this 指向 obj
+foo.apply(obj); // this 指向 obj
+foo.bind(obj)(); // this 指向 obj
 ```
 
 #### 4. new 绑定
 
 ```javascript
 function Foo() {
-  this.name = 'foo' // this 指向新创建的实例
+  this.name = "foo"; // this 指向新创建的实例
 }
-const f = new Foo()
+const f = new Foo();
 ```
 
 #### 5. 箭头函数
@@ -113,9 +113,9 @@ const f = new Foo()
 ```javascript
 const obj = {
   foo: () => {
-    console.log(this) // 取外层 this（词法作用域）
-  }
-}
+    console.log(this); // 取外层 this（词法作用域）
+  },
+};
 ```
 
 ## 原型链
@@ -129,8 +129,8 @@ const obj = {
 ### 原型链示例
 
 ```javascript
-obj.__proto__ === Object.prototype
-Object.prototype.__proto__ === null
+obj.__proto__ === Object.prototype;
+Object.prototype.__proto__ === null;
 ```
 
 ## 堆与栈
