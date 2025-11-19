@@ -30,4 +30,8 @@ features:
     title: Vue
     details: Vue2/Vue3核心原理、响应式系统、组件通信等面试重点
     link: /vue/
+  - icon: 📚
+    title: 历史项目
+    details: 历史项目交接与技术文档集合，快速回顾与检索
+    link: /history/
 ---

@@ -15,6 +15,7 @@ export default defineConfig({
       { text: "TypeScript", link: "/typescript/" },
       { text: "CSS", link: "/css/" },
       { text: "Vue", link: "/vue/" },
+      { text: "历史项目", link: "/history/" },
     ],
 
     sidebar: {
@@ -63,6 +64,38 @@ export default defineConfig({
             { text: "组件通信", link: "/vue/communication" },
             { text: "Vue2 vs Vue3", link: "/vue/vue2-vs-vue3" },
             { text: "Composition API", link: "/vue/composition-api" },
+          ],
+        },
+      ],
+      "/history/": [
+        {
+          text: "历史项目",
+          items: [
+            { text: "概览", link: "/history/" },
+            { text: "360CheckMP", link: "/history/360CheckMP" },
+            {
+              text: "360CheckMP 项目功能模块分析文档",
+              link: "/history/360CheckMP项目功能模块分析文档",
+            },
+            { text: "360safeBigScreen", link: "/history/360safeBigScreen" },
+
+            { text: "360safeMP", link: "/history/360safeMP" },
+
+            { text: "IOC_WeiX_OA", link: "/history/IOC_WeiX_OA" },
+
+            { text: "WEB_SN", link: "/history/WEB_SN" },
+
+            { text: "ticketWeb", link: "/history/ticketWeb" },
+            { text: "YTS Web", link: "/history/ytsWeb" },
+
+            {
+              text: "ZoneSeat 技术栈分析",
+              link: "/history/ZoneSeat技术栈分析文档",
+            },
+            {
+              text: "ZoneSeat 详细技术实现分析",
+              link: "/history/ZoneSeat详细技术实现分析",
+            },
           ],
         },
       ],
