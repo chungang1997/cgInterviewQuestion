@@ -11,7 +11,7 @@ hero:
       link: /javascript/
     - theme: alt
       text: GitHub
-      link: https://github.com/yourusername/interview-docs
+      link: https://github.com/chungang1997/cgInterviewQuestion
 
 features:
   - icon: 📝
