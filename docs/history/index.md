@@ -26,7 +26,11 @@ title: 历史项目
   - [ytsWeb](/history/ytsWeb)
 
 - ZoneSeat
+
   - [ZoneSeat 技术栈分析文档](/history/ZoneSeat技术栈分析文档)
   - [ZoneSeat 详细技术实现分析](/history/ZoneSeat详细技术实现分析)
+
+- 开发规范
+  - [Cursor 规则](/history/cursor-rules)
 
 > 备注：`.docx`、`.xmind`、`.keystore` 等二进制/非 Markdown 文件暂不纳入文档站点。
