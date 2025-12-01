@@ -27,6 +27,7 @@ export default defineConfig({
             { text: "基础知识", link: "/javascript/basics" },
             { text: "ES6+特性", link: "/javascript/es6" },
             { text: "异步编程", link: "/javascript/async" },
+            { text: "WebSocket", link: "/javascript/websocket" },
             { text: "原型与继承", link: "/javascript/prototype" },
           ],
         },
